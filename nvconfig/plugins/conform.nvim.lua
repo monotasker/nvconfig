@@ -74,7 +74,7 @@ return {
             "88",
             "--target-version",
             "py312",
-            "--preview",  -- Enable Black-compatible formatting
+            "--preview", -- Enable Black-compatible formatting
             "-",
           },
         },

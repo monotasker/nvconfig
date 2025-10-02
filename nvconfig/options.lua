@@ -1,8 +1,9 @@
 -- core settings
 
-vim.cmd("colorscheme edge")
-vim.opt.guifont = "JetBrainsMono Nerd Font Mono:h15"
-vim.cmd("set bg=light")
+vim.cmd("colorscheme dayfox")
+vim.opt.guifont = "Monaspace Neon NF Regular:h15"
+-- vim.opt.guifont = "JetBrainsMono Nerd Font Mono:h15"
+-- vim.cmd("set bg=dark")
 
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2

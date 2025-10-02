@@ -8,9 +8,14 @@ return {
   config = function()
     local lspconfig = require("lspconfig")
     local mason_lspconfig = require("mason-lspconfig")
+    local navic = require("nvim-navic")
 
     -- Common LSP settings
-    -- local on_attach = function(client, bufnr)
+    local on_attach = function(client, bufnr)
+      if client.server_capabilities.documentSymbolProvider then
+        navic.attach(client, bufnr)
+      end
+    end
     -- LSP keybindings are now centralized in remap.lua
     -- end
 
