@@ -64,7 +64,7 @@ return {
         "--select",
         "E,F,I,B,UP,D,DOC,Q,COM,ISC", -- Include formatting rules
         "--ignore",
-        "D104", -- Ignore missing docstring in __init__
+        "D104,D412", -- Ignore missing docstring in __init__
         "-",
       },
       stdin = true,
