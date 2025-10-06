@@ -54,7 +54,7 @@ vim.keymap.set("n", "<leader>fp", "<cmd>Telescope neovim-project<cr>", { desc = 
 
 -- neo-tree
 
-vim.keymap.set("n", "<leader>e", "<Cmd>Neotree<CR>", { desc = "Open Neotree" })
+vim.keymap.set("n", "<leader>t", "<Cmd>Neotree<CR>", { desc = "Open Neotree" })
 
 -- Aerial.nvim
 

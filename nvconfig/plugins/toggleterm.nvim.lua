@@ -4,7 +4,7 @@
 return {
   "akinsho/toggleterm.nvim",
   opts = {
-    open_mapping = [[<leader>t]],
+    open_mapping = [[<leader>/]],
     terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
     persist_size = true,
     direction = "horizontal", -- "vertical" | "horizontal" | "tab" | "float",

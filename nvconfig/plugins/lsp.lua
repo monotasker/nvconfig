@@ -48,6 +48,9 @@ return {
               jedi_definition = { enabled = true },
               jedi_implementation = { enabled = true },
             },
+            jedi = {
+              environment = vim.fn.getenv('VIRTUAL_ENV'),
+            },
           },
         },
       },

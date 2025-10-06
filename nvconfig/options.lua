@@ -1,6 +1,6 @@
 -- core settings
 
-vim.cmd("colorscheme dayfox")
+-- vim.cmd("colorscheme dayfox")
 vim.opt.guifont = "Monaspace Neon NF Regular:h15"
 -- vim.opt.guifont = "JetBrainsMono Nerd Font Mono:h15"
 -- vim.cmd("set bg=dark")
