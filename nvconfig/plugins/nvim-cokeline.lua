@@ -9,54 +9,72 @@ return {
     "stevearc/resession.nvim", -- Optional, for persistent history
   },
   config = function()
+    local hlgroups = require("cokeline.hlgroups")
+    local hl_attr = hlgroups.get_hl_attr
+
     require("cokeline").setup({
       default_hl = {
         fg = function(buffer)
-          return buffer.is_focused and "TabLineSel" or "TabLine"
+          return buffer.is_focused and hl_attr("Normal", "fg") or hl_attr("Comment", "fg")
         end,
-        bg = function(buffer)
-          return buffer.is_focused and "TabLineSel" or "TabLine"
-        end,
+        bg = hl_attr("ColorColumn", "bg"),
       },
+
       components = {
         {
-          -- text = "",
+          text = " ",
+          bg = hl_attr("Normal", "bg"),
+        },
+        {
           text = "",
-          fg = function(buffer)
-            return buffer.is_focused and "TabLineSel" or "TabLineFill"
-          end,
-          bg = "TabLineFill",
+          fg = hl_attr("ColorColumn", "bg"),
+          bg = hl_attr("Normal", "bg"),
         },
         {
           text = function(buffer)
-            return buffer.devicon.icon .. " "
+            return buffer.devicon.icon
           end,
           fg = function(buffer)
             return buffer.devicon.color
           end,
         },
         {
+          text = " ",
+        },
+        {
           text = function(buffer)
-            return buffer.unique_prefix .. buffer.filename .. " "
+            return buffer.filename .. "  "
           end,
-          fg = function(buffer)
-            return buffer.is_focused and "TabLineSel" or "TabLineFill"
+          style = function(buffer)
+            return buffer.is_focused and "bold" or nil
           end,
+          ft = "TabLine",
+          bg = "TabLineFill",
+        },
+        {
+          text = "x",
+          delete_buffer_on_left_click = true,
+        },
+        {
+          text = " ",
         },
         {
           text = "",
-          fg = function(buffer)
-            return buffer.is_focused and "TabLineSel" or "TabLineFill"
-          end,
-          bg = "TabLineFill",
+          fg = hl_attr("ColorColumn", "bg"),
+          bg = hl_attr("Normal", "bg"),
         },
       },
+
       rhs = {
+
         {
+
           text = function()
             return " " .. os.date("%H:%M") .. " "
           end,
+
           fg = "TabLine",
+
           bg = "TabLineFill",
         },
       },
