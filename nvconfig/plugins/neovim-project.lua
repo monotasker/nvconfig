@@ -11,7 +11,13 @@ return {
       "~/Development/knowledge-commons-works/site/kcworks/dependencies/*",
     },
     picker = {
-      type = "telescope", -- one of "telescope", "fzf-lua", or "snacks"
+      type = "snacks", -- one of "telescope", "fzf-lua", or "snacks"
+      preview = {
+        enabled = true, -- show directory structure in Telescope preview
+        git_status = true, -- show branch name, an ahead/behind counter, and the git status of each file/folder
+        git_fetch = false, -- fetch from remote, used to display the number of commits ahead/behind, requires git authorization
+        show_hidden = true, -- show hidden files/folders
+      },
     },
     -- Load the most recent session on startup if not in the project directory
     last_session_on_startup = false,

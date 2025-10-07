@@ -46,11 +46,15 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- telescope
 
 local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
-vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
-vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
-vim.keymap.set("n", "<leader>fp", "<cmd>Telescope neovim-project<cr>", { desc = "Find projects" })
+vim.keymap.set("n", "<leader>tff", builtin.find_files, { desc = "Telescope find files" })
+vim.keymap.set("n", "<leader>tfg", builtin.live_grep, { desc = "Telescope live grep" })
+vim.keymap.set("n", "<leader>tfb", builtin.buffers, { desc = "Telescope buffers" })
+vim.keymap.set("n", "<leader>tfh", builtin.help_tags, { desc = "Telescope help tags" })
+vim.keymap.set("n", "<leader>tfp", "<cmd>Telescope neovim-project<cr>", { desc = "Find projects" })
+
+-- neovim-project
+
+vim.keymap.set("n", "<leader>fp", "<cmd>NeovimProjectHistory<cr>", { desc = "Recent projects" })
 
 -- neo-tree
 
