@@ -9,10 +9,10 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to window above" })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to window on right" })
 
 -- Resize windows by 3 lines/columns with Cmd + arrow keys
-vim.keymap.set("n", "<D-Left>", "3<C-w><", { desc = "Decrease window width by 3" })
-vim.keymap.set("n", "<D-Right>", "3<C-w>>", { desc = "Increase window width by 3" })
-vim.keymap.set("n", "<D-Up>", "3<C-w>-", { desc = "Decrease window height by 3" })
-vim.keymap.set("n", "<D-Down>", "3<C-w>+", { desc = "Increase window height by 3" })
+vim.keymap.set("n", "<a-Left>", "3<C-w><", { desc = "Decrease window width by 3" })
+vim.keymap.set("n", "<a-Right>", "3<C-w>>", { desc = "Increase window width by 3" })
+vim.keymap.set("n", "<a-Up>", "3<C-w>-", { desc = "Decrease window height by 3" })
+vim.keymap.set("n", "<a-Down>", "3<C-w>+", { desc = "Increase window height by 3" })
 
 -- Buffer navigation
 vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })

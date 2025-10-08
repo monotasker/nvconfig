@@ -48,8 +48,10 @@ return {
           style = function(buffer)
             return buffer.is_focused and "bold" or nil
           end,
-          ft = "TabLine",
-          bg = "TabLineFill",
+          fg = function(buffer)
+            return buffer.is_focused and hl_attr("Normal", "fg") or hl_attr("Comment", "fg")
+          end,
+          bg = hl_attr("ColorColumn", "bg"),
         },
         {
           text = "x",
@@ -66,16 +68,18 @@ return {
       },
 
       rhs = {
-
+        {
+          text = "",
+          fg = hl_attr("String", "fg"),
+          bg = hl_attr("Tabline", "bg"),
+        },
         {
 
           text = function()
-            return " " .. os.date("%H:%M") .. " "
+            return "  " .. os.date("%H:%M") .. " "
           end,
-
-          fg = "TabLine",
-
-          bg = "TabLineFill",
+          fg = hl_attr("TabLine", "bg"),
+          bg = hl_attr("String", "fg"),
         },
       },
     })
