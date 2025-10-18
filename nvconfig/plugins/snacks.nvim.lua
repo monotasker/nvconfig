@@ -27,6 +27,9 @@ return {
     },
     picker = {
       enabled = true,
+      sources = {
+        explorer = {},
+      },
       layout = {
         preset = "vertical",
       },

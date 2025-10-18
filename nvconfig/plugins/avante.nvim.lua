@@ -15,7 +15,7 @@ return {
     -- this file can contain specific instructions for your project
     instructions_file = "avante.md",
     -- for example
-    provider = "claude",
+    provider = "ollama",
     providers = {
       claude = {
         endpoint = "https://api.anthropic.com",
@@ -35,6 +35,63 @@ return {
           max_tokens = 32768,
         },
       },
+      ollama = {
+        endpoint = "http://localhost:11434",
+        model = "mistral:7b-instruct",
+      },
+      ollama_mistral = {
+        __inherited_from = "ollama",
+        endpoint = "http://localhost:11434",
+        model = "mistral:7b-instruct",
+        timeout = 30000,
+        extra_request_body = {
+          temperature = 0.5,
+        },
+        hide_in_model_selector = false,
+      },
+      ollama_deepseek = {
+        __inherited_from = "ollama",
+        endpoint = "http://localhost:11434",
+        model = "deepseek-coder:33b",
+        timeout = 30000,
+        extra_request_body = {
+          temperature = 0.5,
+        },
+        hide_in_model_selector = false,
+      },
+      ollama_codellama = {
+        __inherited_from = "ollama",
+        endpoint = "http://localhost:11434",
+        model = "codellama:34b",
+        timeout = 30000,
+        extra_request_body = {
+          temperature = 0.5,
+        },
+        hide_in_model_selector = false,
+      },
+    },
+    input = {
+      provider = "snacks",
+      provider_opts = {
+        -- Additional snacks.input options
+        title = "Avante Input",
+        icon = " ",
+      },
+    },
+    shortcuts = {
+      {
+        name = "refactor",
+        description = "Refactor code with best practices",
+        details = "Automatically refactor code to improve readability, maintainability, and follow best practices while preserving functionality",
+        prompt = "Please refactor this code following best practices, improving readability and maintainability while preserving functionality.",
+      },
+      {
+        name = "test",
+        description = "Generate unit tests",
+        details = "Create comprehensive unit tests covering edge cases, error scenarios, and various input conditions",
+        prompt = "Please generate comprehensive unit tests for this code, covering edge cases and error scenarios.",
+      },
+      -- Add more custom shortcuts...
     },
   },
   dependencies = {
