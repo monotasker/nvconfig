@@ -49,11 +49,11 @@ vim.opt.timeoutlen = 500 -- Faster key sequence timeout
 vim.opt.equalalways = false
 
 -- Equalize window widths when session is loaded
-vim.api.nvim_create_autocmd("SessionLoadPost", {
-  callback = function()
-    vim.cmd("wincmd =")
-  end,
-})
+-- vim.api.nvim_create_autocmd("SessionLoadPost", {
+--   callback = function()
+--     vim.cmd("wincmd =")
+--   end,
+-- })
 
 -- No automatic comment insertion
 vim.cmd([[autocmd FileType * set formatoptions-=ro]])
@@ -82,64 +82,64 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 -- Auto-resize active window to optimal width (max of total_width/buffer_count or 90) and minimum 20 lines tall
 -- Only applies to regular editing buffers (excludes help, quickfix, terminal, etc.)
 -- PERFORMANCE OPTIMIZED: Only runs on VimResized and BufWinEnter, not every WinEnter
-vim.api.nvim_create_autocmd({ "VimResized", "BufWinEnter" }, {
-  callback = function()
-    local current_win = vim.api.nvim_get_current_win()
-    local current_buf = vim.api.nvim_win_get_buf(current_win)
-    local buf_type = vim.api.nvim_buf_get_option(current_buf, "buftype")
-    local file_type = vim.api.nvim_buf_get_option(current_buf, "filetype")
-
-    -- Skip non-editing buffers
-    local skip_filetypes = {
-      "help",
-      "qf",
-      "terminal",
-      "telescope",
-      "neo-tree",
-      "trouble",
-      "store",
-      "outline",
-      "aerial",
-      "diffview",
-      "neogit",
-      "toggleterm",
-    }
-
-    if buf_type ~= "" or vim.tbl_contains(skip_filetypes, file_type) then
-      return
-    end
-
-    -- Count editing windows (excluding skipped filetypes) - cached for performance
-    local editing_windows = 0
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-      local win_buf = vim.api.nvim_win_get_buf(win)
-      local buf_buftype = vim.api.nvim_buf_get_option(win_buf, "buftype")
-      local buf_filetype = vim.api.nvim_buf_get_option(win_buf, "filetype")
-      if buf_buftype == "" and not vim.tbl_contains(skip_filetypes, buf_filetype) then
-        editing_windows = editing_windows + 1
-      end
-    end
-
-    -- Don't resize if there are no editing windows or if this is the only editing window
-    if editing_windows <= 1 then
-      return
-    end
-
-    -- Calculate optimal width: max of (total_width / window_count) or 90
-    local total_width = vim.o.columns
-    local optimal_width = math.max(math.floor(total_width / editing_windows), 90)
-
-    local current_width = vim.api.nvim_win_get_width(current_win)
-    local current_height = vim.api.nvim_win_get_height(current_win)
-
-    -- Resize width if too narrow
-    if current_width < optimal_width then
-      vim.api.nvim_win_set_width(current_win, optimal_width)
-    end
-
-    -- Resize height if too short
-    if current_height < 20 then
-      vim.api.nvim_win_set_height(current_win, 20)
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "VimResized", "BufWinEnter" }, {
+--   callback = function()
+--     local current_win = vim.api.nvim_get_current_win()
+--     local current_buf = vim.api.nvim_win_get_buf(current_win)
+--     local buf_type = vim.api.nvim_buf_get_option(current_buf, "buftype")
+--     local file_type = vim.api.nvim_buf_get_option(current_buf, "filetype")
+--
+--     -- Skip non-editing buffers
+--     local skip_filetypes = {
+--       "help",
+--       "qf",
+--       "terminal",
+--       "telescope",
+--       "neo-tree",
+--       "trouble",
+--       "store",
+--       "outline",
+--       "aerial",
+--       "diffview",
+--       "neogit",
+--       "toggleterm",
+--     }
+--
+--     if buf_type ~= "" or vim.tbl_contains(skip_filetypes, file_type) then
+--       return
+--     end
+--
+--     -- Count editing windows (excluding skipped filetypes) - cached for performance
+--     local editing_windows = 0
+--     for _, win in ipairs(vim.api.nvim_list_wins()) do
+--       local win_buf = vim.api.nvim_win_get_buf(win)
+--       local buf_buftype = vim.api.nvim_buf_get_option(win_buf, "buftype")
+--       local buf_filetype = vim.api.nvim_buf_get_option(win_buf, "filetype")
+--       if buf_buftype == "" and not vim.tbl_contains(skip_filetypes, buf_filetype) then
+--         editing_windows = editing_windows + 1
+--       end
+--     end
+--
+--     -- Don't resize if there are no editing windows or if this is the only editing window
+--     if editing_windows <= 1 then
+--       return
+--     end
+--
+--     -- Calculate optimal width: max of (total_width / window_count) or 90
+--     local total_width = vim.o.columns
+--     local optimal_width = math.max(math.floor(total_width / editing_windows), 90)
+--
+--     local current_width = vim.api.nvim_win_get_width(current_win)
+--     local current_height = vim.api.nvim_win_get_height(current_win)
+--
+--     -- Resize width if too narrow
+--     if current_width < optimal_width then
+--       vim.api.nvim_win_set_width(current_win, optimal_width)
+--     end
+--
+--     -- Resize height if too short
+--     if current_height < 20 then
+--       vim.api.nvim_win_set_height(current_win, 20)
+--     end
+--   end,
+-- })
