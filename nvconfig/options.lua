@@ -22,6 +22,8 @@ vim.opt.signcolumn = "yes:2"
 vim.opt.scrolloff = 8
 vim.opt.showcmd = true
 
+vim.opt.winbar = "%f"
+
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.config/nvim/undodir"

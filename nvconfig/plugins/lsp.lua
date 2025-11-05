@@ -12,6 +12,9 @@ return {
 
     -- Common LSP settings
     local on_attach = function(client, bufnr)
+      -- Fix position encoding to UTF-8 for all clients
+      client.server_capabilities.positionEncodings = { "utf-8" }
+
       if client.server_capabilities.documentSymbolProvider then
         navic.attach(client, bufnr)
       end
@@ -36,20 +39,64 @@ return {
               flake8 = { enabled = false },
               -- Enable mypy for type checking
               pylsp_mypy = { enabled = true },
-              -- Keep useful LSP features
-              rope_completion = { enabled = true },
-              rope_autoimport = { enabled = true },
-              jedi_completion = { enabled = true, fuzzy = true },
+              -- Keep useful LSP features (disabled rope to avoid conflicts with jedi)
+              rope_completion = { enabled = false },
+              rope_autoimport = { enabled = false },
+              jedi_completion = {
+                enabled = true,
+                fuzzy = true,
+                include_params = true,
+                include_class_objects = true,
+              },
               jedi_hover = { enabled = true },
               jedi_references = { enabled = true },
               jedi_signature_help = { enabled = true },
               jedi_symbols = { enabled = true },
               -- Ensure symbol support is enabled
-              jedi_definition = { enabled = true },
+              jedi_definition = {
+                enabled = true,
+                follow_imports = true,
+                follow_builtin_imports = true,
+              },
               jedi_implementation = { enabled = true },
-            },
-            jedi = {
-              environment = vim.fn.getenv('VIRTUAL_ENV'),
+              -- Base jedi plugin (required for import completion)
+              jedi = {
+                enabled = true,
+                environment = vim.fn.getenv("VIRTUAL_ENV"),
+                auto_import_modules = {
+                  "django",
+                  "flask",
+                  "invenio",
+                  "invenio_accounts",
+                  "invenio_app",
+                  "invenio_app_rdm",
+                  "invenio_base",
+                  "invenio_communities",
+                  "invenio_group_collections_kcworks",
+                  "invenio_logging",
+                  "invenio_modular_deposit_form",
+                  "invenio_modular_detail_page",
+                  "invenio_pandas",
+                  "invenio_rdm_records",
+                  "invenio_record_importer_kcworks",
+                  "invenio_records_resources",
+                  "invenio_remote_api_provisioner",
+                  "invenio_remote_user_data_kcworks",
+                  "invenio_requests",
+                  "invenio_s3",
+                  "invenio_saml",
+                  "invenio_search_ui",
+                  "invenio_stats_dashboard",
+                  "invenio_subjects_fast",
+                  "invenio_utilities_tuw",
+                  "invenio_vocabularies",
+                  "kcworks",
+                  "matplotlib",
+                  "numpy",
+                  "pandas",
+                  "requests",
+                },
+              },
             },
           },
         },
@@ -183,29 +230,6 @@ return {
               contentUnformatted = "pre,code,textarea",
               indentInnerHtml = false,
               extraLiners = "head,body,/html",
-            },
-          },
-        },
-      },
-
-      -- CSS preprocessors
-      less_ls = {
-        settings = {
-          less = {
-            validate = true,
-            lint = {
-              unknownAtRules = "ignore",
-            },
-          },
-        },
-      },
-
-      scss_ls = {
-        settings = {
-          scss = {
-            validate = true,
-            lint = {
-              unknownAtRules = "ignore",
             },
           },
         },
@@ -355,25 +379,11 @@ return {
     -- Setup LSP servers using the modern vim.lsp.config() API
     -- This is the new way since setup_handlers was deprecated in mason-lspconfig 2.0+
 
-    -- Setup TypeScript/JavaScript server
-    vim.lsp.config("tsserver", {
+    -- Setup Infrastructure
+    vim.lsp.config("cssls", {
       on_attach = on_attach,
       capabilities = capabilities,
-      settings = servers.tsserver.settings,
-    })
-
-    -- Setup Python server
-    vim.lsp.config("pylsp", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      settings = servers.pylsp.settings,
-    })
-
-    -- Setup Database & Query
-    vim.lsp.config("sqls", {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      settings = servers.sqls.settings,
+      settings = servers.dockerls.settings,
     })
 
     -- Setup Infrastructure
@@ -401,6 +411,27 @@ return {
       on_attach = on_attach,
       capabilities = capabilities,
       settings = servers.lua_ls.settings,
+    })
+
+    -- Setup Python server
+    vim.lsp.config("pylsp", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      settings = servers.pylsp.settings,
+    })
+
+    -- Setup Database & Query
+    vim.lsp.config("sqls", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      settings = servers.sqls.settings,
+    })
+
+    -- Setup TypeScript/JavaScript server
+    vim.lsp.config("tsserver", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      settings = servers.tsserver.settings,
     })
 
     -- Diagnostic configuration

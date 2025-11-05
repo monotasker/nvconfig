@@ -5,3 +5,4 @@ vim.g.maplocalleader = "\\"
 require("nvconfig.lazy_init")
 require("nvconfig.options")
 require("nvconfig.remap")
+require("nvconfig.filetype")

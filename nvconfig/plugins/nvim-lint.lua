@@ -92,6 +92,16 @@ return {
       "B101", -- Skip assert statement warnings
     }
 
+    -- Configure mypy linter
+    lint.linters.mypy.args = {
+      "--config-file",
+      "pyproject.toml",
+      "--show-error-codes",
+      "--no-error-summary",
+      "--ignore-missing-imports",
+      "$FILENAME",
+    }
+
     -- Configure sqlfluff linter
     lint.linters.sqlfluff = {
       cmd = "sqlfluff",
