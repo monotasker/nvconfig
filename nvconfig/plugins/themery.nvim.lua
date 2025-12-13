@@ -9,6 +9,7 @@ return {
       themes = {
         "adwaita",
         "catppuccin",
+        "cursor-light",
         "dawnfox",
         "dayfox",
         "duskfox",
@@ -18,7 +19,13 @@ return {
         "material",
         "nightfox",
         "nord",
-        "nordfox",
+        {
+          name = "nordfox",
+          colorscheme = "nordfox",
+          before = [[
+            vim.opt.background = "dark"
+          ]],
+        },
         "onedark",
         "onehalfdark",
         "onehalflight",
@@ -31,6 +38,10 @@ return {
         "tempus_totus",
       },
       livePreview = true,
+      -- Refresh highlights after colorscheme is applied to fix plugin overrides
+      globalAfter = [[
+        vim.cmd("doautocmd ColorScheme")
+      ]],
     })
   end,
 }

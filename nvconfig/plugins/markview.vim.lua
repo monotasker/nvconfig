@@ -9,6 +9,7 @@ return {
   --     "saghen/blink.cmp"
   opts = {
     preview = {
+      filetypes = { "markdown", "codecompanion" },
       icon_provider = "devicons", -- "mini" or "devicons" or "internal"
     },
   },

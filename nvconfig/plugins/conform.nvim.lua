@@ -127,7 +127,7 @@ return {
         },
         ["pyproject-fmt"] = {
           command = "pyproject-fmt",
-          args = { "--stdin-filename", "$FILENAME", "-" },
+          args = { "-" },
         },
         trim_whitespace = {
           command = "sed",

@@ -79,6 +79,28 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   end,
 })
 
+-- Expand 'cc' into 'CodeCompanion' in the command line
+vim.cmd([[cab cc CodeCompanion]])
+
+-- Refresh colorscheme highlights after plugins load to fix overrides
+-- This ensures highlights are properly applied even if plugins override them
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    -- Small delay to ensure all plugins are loaded
+    vim.defer_fn(function()
+      if vim.g.theme_id then
+        -- Get the saved theme from themery and reapply it
+        local ok, themery = pcall(require, "themery")
+        if ok then
+          -- Use the theme_id directly to reapply the theme
+          themery.setThemeByIndex(vim.g.theme_id, false)
+        end
+      end
+    end, 200)
+  end,
+  once = true,
+})
+
 -- window management
 
 -- Auto-resize active window to optimal width (max of total_width/buffer_count or 90) and minimum 20 lines tall

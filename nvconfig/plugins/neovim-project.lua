@@ -33,9 +33,9 @@ return {
       "nvim-lua/plenary.nvim",
     },
     -- optional picker
-    { "nvim-telescope/telescope.nvim", tag = "0.1.4" },
+    -- { "nvim-telescope/telescope.nvim", tag = "0.1.4" },
     -- optional picker
-    { "ibhagwan/fzf-lua" },
+    -- { "ibhagwan/fzf-lua" },
     -- optional picker
     { "folke/snacks.nvim" },
     {
