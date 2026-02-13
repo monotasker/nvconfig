@@ -20,8 +20,8 @@ return {
         typescriptreact = { "biome" },
 
         -- Web technologies
-        html = { "prettier" },
-        htmldjango = { "djlint", "prettier" },
+        -- html = { "prettier" }, -- Disabled: prettier doesn't handle Jinja syntax well
+        htmldjango = { "djlint" }, -- Removed prettier to avoid conflicts with Jinja
         jinja = { "djlint" },
         jinja2 = { "djlint" },
         css = { "prettier" },
@@ -57,10 +57,23 @@ return {
         zsh = { "shfmt" },
       },
 
-      format_on_save = {
-        timeout_ms = 1000, -- Reduced timeout to prevent blocking
-        lsp_fallback = true,
-      },
+      -- Use a function so we can skip format-on-save per project/path
+      format_on_save = function(bufnr)
+        local path = vim.api.nvim_buf_get_name(bufnr)
+        if path == "" then
+          return { timeout_ms = 1000, lsp_fallback = true }
+        end
+        -- Paths (or path segments) where format-on-save is disabled
+        local no_format_paths = {
+          "specifications", -- this repo: preserve manual markdown layout
+        }
+        for _, segment in ipairs(no_format_paths) do
+          if path:find(segment, 1, true) then
+            return nil -- skip formatting in this buffer
+          end
+        end
+        return { timeout_ms = 1000, lsp_fallback = true }
+      end,
 
       formatters = {
         -- Python
@@ -79,10 +92,18 @@ return {
           },
         },
 
-        -- JavaScript/TypeScript
+        -- JavaScript/TypeScript: match Prettier/ESLint so output is interchangeable
         biome = {
           command = "biome",
           args = { "format", "--stdin-file-path", "$FILENAME", "-" },
+          prepend_args = {
+            "--indent-style=space",
+            "--indent-width=2",
+            "--line-width=100",
+            "--semicolons=always",
+            "--javascript-formatter-quote-style=double",
+            "--trailing-commas=es5",
+          },
         },
 
         -- Web technologies
@@ -123,7 +144,7 @@ return {
         },
         taplo = {
           command = "taplo",
-          args = { "format", "--stdin-file-path", "$FILENAME", "-" },
+          args = { "format", "--stdin-filepath", "$FILENAME", "-" },
         },
         ["pyproject-fmt"] = {
           command = "pyproject-fmt",

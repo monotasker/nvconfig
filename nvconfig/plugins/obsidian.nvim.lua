@@ -2,9 +2,9 @@
 -- Installed via store.nvim
 
 return {
-  "epwalsh/obsidian.nvim",
+  "obsidian-nvim/obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit
-  lazy = true,
+  lazy = false,
   ft = "markdown",
   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
   -- event = {
@@ -26,6 +26,17 @@ return {
         path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Notes/",
       },
     },
-    -- see below for full list of options 👇
+    picker = {
+      name = "snacks",
+      note_mappings = {
+        new = "<C-x>",
+        insert_link = "<C-l>",
+      },
+      tag_mappings = {
+        tag_note = "<C-x>",
+        insert_tag = "<C-l>",
+      },
+    },
+    ui = { enable = false },
   },
 }

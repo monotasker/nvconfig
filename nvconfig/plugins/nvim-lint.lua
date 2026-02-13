@@ -149,7 +149,7 @@ return {
       cmd = "taplo",
       args = {
         "lint",
-        "--stdin-file-path",
+        "--stdin-filepath",
         "$FILENAME",
         "-",
       },

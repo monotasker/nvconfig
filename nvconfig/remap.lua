@@ -20,6 +20,8 @@ vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" }
 vim.keymap.set("n", "<C-n>", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<C-p>", ":bprevious<CR>", { desc = "Previous buffer" })
 
+vim.keymap.set("n", "<leader>bo", ':%bd|e #|normal ``"<CR>', { desc = "Close all but current buffer" })
+
 -- EDITING
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move current line down" })
@@ -76,7 +78,11 @@ vim.keymap.set("n", "<leader>o", "<Cmd>Outline<CR>", { desc = "Toggle symbols ou
 
 -- Comment.nvim
 
--- Toggle line comments with Ctrl+/
+-- Toggle line comments with Ctrl+/ (using <C-_> which works on macOS)
+vim.keymap.set("n", "<C-_>", "<Plug>(comment_toggle_linewise_current)", { desc = "Toggle line comment" })
+vim.keymap.set("v", "<C-_>", "<Plug>(comment_toggle_linewise_visual)", { desc = "Toggle line comment" })
+vim.keymap.set("i", "<C-_>", "<Plug>(comment_toggle_linewise_current)", { desc = "Toggle line comment" })
+-- Also try <C-/> in case it works in some terminals
 vim.keymap.set("n", "<C-/>", "<Plug>(comment_toggle_linewise_current)", { desc = "Toggle line comment" })
 vim.keymap.set("v", "<C-/>", "<Plug>(comment_toggle_linewise_visual)", { desc = "Toggle line comment" })
 vim.keymap.set("i", "<C-/>", "<Plug>(comment_toggle_linewise_current)", { desc = "Toggle line comment" })
@@ -84,6 +90,80 @@ vim.keymap.set("i", "<C-/>", "<Plug>(comment_toggle_linewise_current)", { desc =
 -- Block comments
 vim.keymap.set("n", "<leader>bc", "<Plug>(comment_toggle_blockwise_current)", { desc = "Toggle block comment" })
 vim.keymap.set("v", "<leader>bc", "<Plug>(comment_toggle_blockwise_visual)", { desc = "Toggle block comment" })
+
+-- Python-specific block comment handler (triple quotes)
+local function python_block_comment()
+  local start_line, end_line
+
+  -- Get visual selection if available, otherwise use current line
+  -- Visual marks '< and '> are set when exiting visual mode
+  local vstart = vim.fn.line("'<")
+  local vend = vim.fn.line("'>")
+
+  if vstart > 0 and vend > 0 and vstart ~= vend then
+    -- We have a visual selection
+    start_line = math.min(vstart, vend)
+    end_line = math.max(vstart, vend)
+  else
+    -- Normal mode: use current line
+    start_line = vim.fn.line(".")
+    end_line = start_line
+  end
+
+  -- Get the selected text
+  local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+  if #lines == 0 then
+    return
+  end
+
+  -- Check if already wrapped in triple quotes
+  local first_line = lines[1]
+  local last_line = lines[#lines]
+  local first_trimmed = vim.trim(first_line)
+  local last_trimmed = vim.trim(last_line)
+  local is_wrapped = first_trimmed:match('^"""') and last_trimmed:match('"""$')
+
+  if is_wrapped then
+    -- Unwrap: remove triple quotes
+    first_line = first_line:gsub('^%s*"""', ""):gsub('"""%s*$', "")
+    last_line = last_line:gsub('^%s*"""', ""):gsub('"""%s*$', "")
+    lines[1] = first_line
+    if #lines > 1 then
+      lines[#lines] = last_line
+    end
+  else
+    -- Wrap: add triple quotes
+    local indent = first_line:match("^(%s*)")
+    lines[1] = indent .. '"""' .. first_line:gsub("^%s*", "")
+    if #lines > 1 then
+      lines[#lines] = last_line .. '"""'
+    else
+      lines[1] = lines[1] .. '"""'
+    end
+  end
+
+  -- Replace the lines
+  vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, lines)
+end
+
+-- Override gb/gbc for Python files to use triple quotes
+vim.keymap.set("v", "gb", function()
+  if vim.bo.filetype == "python" then
+    -- Exit visual mode to set the marks, then call the function
+    vim.cmd("normal! <Esc>")
+    python_block_comment()
+  else
+    vim.cmd("normal! <Plug>(comment_toggle_blockwise_visual)")
+  end
+end, { desc = "Toggle block comment (Python: triple quotes)" })
+
+vim.keymap.set("n", "gbc", function()
+  if vim.bo.filetype == "python" then
+    python_block_comment()
+  else
+    vim.cmd("normal! <Plug>(comment_toggle_blockwise_current)")
+  end
+end, { desc = "Toggle block comment (Python: triple quotes)" })
 
 -- LSP KEYBINDINGS
 

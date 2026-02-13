@@ -9,6 +9,7 @@ return {
       "~/.config/nvim/*",
       "~/Development/*",
       "~/Development/knowledge-commons-works/site/kcworks/dependencies/*",
+      "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/*",
     },
     picker = {
       type = "snacks", -- one of "telescope", "fzf-lua", or "snacks"

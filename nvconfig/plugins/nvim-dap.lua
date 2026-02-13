@@ -9,7 +9,7 @@ return {
     "mfussenegger/nvim-dap-python",
   },
   config = function()
-    local dap = require("nvim-dap")
+    local dap = require("dap")
     local ui = require("dapui")
     local dap_python = require("dap-python")
 
@@ -17,7 +17,11 @@ return {
     require("nvim-dap-virtual-text").setup({
       commented = true,
     })
-    dap_python.setup("python3")
+    -- Use project venv when VIRTUAL_ENV is set, else kcworks-nlp-tools .venv
+    local venv = vim.fn.getenv("VIRTUAL_ENV")
+    local py = (venv ~= "" and venv ~= vim.NIL) and (venv .. "/bin/python")
+        or "/Users/ianscott/Development/kcworks-nlp-tools/.venv/bin/python"
+    dap_python.setup(py)
 
     vim.fn.sign_define("DapBreakpoint", {
       text = "",
@@ -56,7 +60,7 @@ return {
     end, opts)
 
     vim.keymap.set("n", "<leader>dc", dap.continue, opts)
-    vim.keymap.set("n", "<leader>di", dap.set_into, opts)
+    vim.keymap.set("n", "<leader>di", dap.step_into, opts)
     vim.keymap.set("n", "<leader>do", dap.step_over, opts)
     vim.keymap.set("n", "<leader>dO", dap.step_out, opts)
     vim.keymap.set("n", "<leader>dB", dap.step_back, opts)

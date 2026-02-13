@@ -53,8 +53,8 @@ return {
     keymap({ "n", "x" }, "P", "<Plug>(YankyPutBefore)", opts)
 
     -- Cycle through yank history
-    keymap("n", "<c-u>", "<Plug>(YankyPreviousEntry)", opts)
-    keymap("n", "<c-d>", "<Plug>(YankyNextEntry)", opts)
+    -- keymap("n", "<c-u>", "<Plug>(YankyPreviousEntry)", opts)
+    -- keymap("n", "<c-d>", "<Plug>(YankyNextEntry)", opts)
 
     -- Put with indentation
     keymap("n", "]p", "<Plug>(YankyPutIndentAfterLinewise)", opts)
