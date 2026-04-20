@@ -39,6 +39,18 @@ vim.opt.termguicolors = true
 
 vim.opt.showmode = false
 
+-- Ensure nvim-notify has a background color from the active colorscheme.
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    local ok_float, normal_float = pcall(vim.api.nvim_get_hl, 0, { name = "NormalFloat", link = false })
+    local ok_normal, normal = pcall(vim.api.nvim_get_hl, 0, { name = "Normal", link = false })
+    local bg = (ok_float and normal_float and normal_float.bg) or (ok_normal and normal and normal.bg)
+    if bg then
+      vim.api.nvim_set_hl(0, "NotifyBackground", { bg = string.format("#%06x", bg) })
+    end
+  end,
+})
+
 -- Completion performance optimizations
 vim.opt.completeopt = "menu,menuone,noinsert,noselect"
 -- vim.opt.pumheight = 10 -- Limit popup menu height

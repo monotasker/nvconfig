@@ -34,7 +34,9 @@ return {
       preset = "enter",
       ["<Tab>"] = { "snippet_forward", "select_next", "fallback" },
       ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
+      ["<CR>"] = { "accept", "fallback" },
     },
+    snippets = { preset = "luasnip" },
     completion = {
       list = {
         selection = {
@@ -43,7 +45,7 @@ return {
         },
       },
       documentation = {
-        auto_show = false,
+        auto_show = true,
       },
     },
 

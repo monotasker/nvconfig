@@ -94,15 +94,19 @@ return {
 
         -- JavaScript/TypeScript: match Prettier/ESLint so output is interchangeable
         biome = {
+          inherit = false,
           command = "biome",
-          args = { "format", "--stdin-file-path", "$FILENAME", "-" },
-          prepend_args = {
+          args = {
+            "format",
             "--indent-style=space",
             "--indent-width=2",
             "--line-width=100",
             "--semicolons=always",
             "--javascript-formatter-quote-style=double",
             "--trailing-commas=es5",
+            "--stdin-file-path",
+            "$FILENAME",
+            "-",
           },
         },
 

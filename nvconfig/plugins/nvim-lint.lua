@@ -12,10 +12,10 @@ return {
       python = { "ruff", "mypy", "bandit" },
 
       -- JavaScript/TypeScript/React
-      javascript = { "biome" },
-      typescript = { "biome" },
-      javascriptreact = { "biome" },
-      typescriptreact = { "biome" },
+      javascript = { "biomejs" },
+      typescript = { "biomejs" },
+      javascriptreact = { "biomejs" },
+      typescriptreact = { "biomejs" },
 
       -- Web technologies
       html = { "htmlhint" },
@@ -72,8 +72,8 @@ return {
       ignore_exitcode = true,
     }
 
-    -- Configure biome linter
-    lint.linters.biome = {
+    -- Configure biomejs linter while preserving built-in parser.
+    lint.linters.biomejs = vim.tbl_deep_extend("force", lint.linters.biomejs or {}, {
       cmd = "biome",
       args = {
         "check",
@@ -84,7 +84,7 @@ return {
       stdin = true,
       stream = "stderr",
       ignore_exitcode = true,
-    }
+    })
 
     -- Customize bandit to ignore assert warnings
     lint.linters.bandit.args = {

@@ -23,7 +23,6 @@ return {
         "html",
         "css",
         "scss",
-        "less",
 
         -- Data formats
         "json",

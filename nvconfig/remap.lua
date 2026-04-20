@@ -64,9 +64,9 @@ vim.keymap.set("n", "<leader>tfp", "<cmd>Telescope neovim-project<cr>", { desc =
 
 vim.keymap.set("n", "<leader>fp", "<cmd>NeovimProjectHistory<cr>", { desc = "Recent projects" })
 
--- neo-tree
+-- nvim-tree
 
-vim.keymap.set("n", "<leader>t", "<Cmd>Neotree<CR>", { desc = "Open Neotree" })
+vim.keymap.set("n", "<leader>t", "<Cmd>NvimTreeOpen<CR>", { desc = "Open NvimTree" })
 
 -- Aerial.nvim
 
@@ -252,6 +252,32 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "<leader>xl", "<cmd>Trouble loclist toggle<cr>", { desc = "Show location list" })
 vim.keymap.set("n", "<leader>xq", "<cmd>Trouble qflist toggle<cr>", { desc = "Show quickfix list" })
+
+-- BALISAGE XML PREVIEW
+
+vim.keymap.set("n", "<leader>xp", function()
+  local ft = vim.bo.filetype
+  if ft ~= "xml" and ft ~= "docbk" then
+    vim.notify("balisage-preview: not an XML file", vim.log.levels.WARN)
+    return
+  end
+  local filepath = vim.fn.expand("%:p")
+  vim.notify("Generating Balisage preview…", vim.log.levels.INFO)
+  vim.fn.jobstart({ vim.fn.expand("~/.local/bin/balisage-preview"), filepath }, {
+    on_exit = function(_, code)
+      if code == 0 then
+        vim.notify("Balisage preview opened in browser", vim.log.levels.INFO)
+      else
+        vim.notify("balisage-preview failed (exit code " .. code .. ")", vim.log.levels.ERROR)
+      end
+    end,
+    on_stderr = function(_, data)
+      if data and #data > 0 and data[1] ~= "" then
+        vim.notify("balisage-preview: " .. table.concat(data, "\n"), vim.log.levels.ERROR)
+      end
+    end,
+  })
+end, { desc = "Preview Balisage XML paper in browser" })
 
 -- UTILITY KEYBINDINGS
 

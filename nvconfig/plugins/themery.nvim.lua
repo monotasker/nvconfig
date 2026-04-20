@@ -14,6 +14,13 @@ return {
         "dayfox",
         "duskfox",
         "edge",
+        {
+          name = "gruvbox-material",
+          colorscheme = "gruvbox-material",
+          before = [[
+            vim.opt.background = "dark"
+          ]],
+        },
         "kanagawa-paper-canvas",
         "kanagawa-paper-ink",
         "material",

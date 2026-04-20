@@ -63,6 +63,31 @@ return {
               jedi = {
                 enabled = true,
                 environment = vim.fn.getenv("VIRTUAL_ENV"),
+                -- Extra paths for pylsp (Mason): only used when KCWORKS_NEXT_ROOT is set.
+                -- Set in .envrc or shell when working on kcworks-next so go-to-def/find-refs
+                -- resolve into local deps and kcworks. Pylsp runs in Mason's env and does not
+                -- read pyproject.toml from the workspace.
+                extra_paths = (function()
+                  local root = os.getenv("KCWORKS_NEXT_ROOT")
+                  if not root or root == "" then
+                    return {}
+                  end
+                  local site = root .. "/site"
+                  local deps = site .. "/kcworks/dependencies"
+                  return {
+                    site,
+                    deps .. "/invenio-communities",
+                    deps .. "/invenio-group-collections-kcworks",
+                    deps .. "/invenio-modular-deposit-form",
+                    deps .. "/invenio-modular-detail-page",
+                    deps .. "/invenio-rdm-records",
+                    deps .. "/invenio-remote-api-provisioner",
+                    deps .. "/invenio-record-importer-kcworks",
+                    deps .. "/invenio-remote-user-data-kcworks",
+                    deps .. "/invenio-stats-dashboard",
+                    deps .. "/invenio-vocabularies",
+                  }
+                end)(),
                 auto_import_modules = {
                   "django",
                   "flask",

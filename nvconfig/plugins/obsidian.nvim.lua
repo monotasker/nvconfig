@@ -26,6 +26,13 @@ return {
         path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Notes/",
       },
     },
+    daily_notes = {
+      enabled = true,
+      folder = "daily",
+      date_format = "YYYY-MM-DD",
+      default_tags = { "daily-notes" },
+    },
+    legacy_commands = false,
     picker = {
       name = "snacks",
       note_mappings = {
