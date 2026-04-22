@@ -1,62 +1,91 @@
--- Plugin: nvim-treesitter/nvim-treesitter
--- Installed via store.nvim
+-- Plugin: nvim-treesitter/nvim-treesitter (main branch)
+-- See: https://github.com/nvim-treesitter/nvim-treesitter/tree/main
+--
+-- Migration notes (from master branch):
+--   * `require('nvim-treesitter.configs').setup{...}` is gone.
+--   * `ensure_installed`, `auto_install`, and the `highlight`/`indent`/
+--     `incremental_selection` modules don't exist here.
+--   * Parsers are installed explicitly via `require('nvim-treesitter').install`.
+--   * Highlights are enabled per-buffer with `vim.treesitter.start()`.
 
 return {
   "nvim-treesitter/nvim-treesitter",
+  branch = "main",
   lazy = false,
-  build = ":TSUpdate",
+  -- No `build` hook: on the `main` branch, parser installation is handled by
+  -- `require('nvim-treesitter').install` in `config` below. Running `:TSUpdate`
+  -- as a build hook can fire before the new install module is re-required and
+  -- end up running the stale (master-era) installer, which fails with errors
+  -- like `mv tree-sitter-<lang>-tmp/<lang>-master ...`.
   config = function()
-    require("nvim-treesitter.configs").setup({
-      ensure_installed = {
-        -- Core Neovim
-        "lua",
-        "vim",
-        "vimdoc",
-        "query",
+    -- The `main` branch installs parsers and queries to
+    -- `<stdpath('data')>/site/{parser,queries}`. Lazy.nvim doesn't include this
+    -- directory in `runtimepath` automatically, so Neovim cannot find the
+    -- compiled `.so` files or the per-language query overrides without this.
+    vim.opt.runtimepath:prepend(vim.fn.stdpath("data") .. "/site")
 
-        -- JavaScript/TypeScript/React
-        "javascript",
-        "typescript",
-        "tsx",
+    local parsers = {
+      "lua",
+      "vim",
+      "vimdoc",
+      "query",
 
-        -- Web technologies
-        "html",
-        "css",
-        "scss",
+      "javascript",
+      "typescript",
+      "tsx",
 
-        -- Data formats
-        "json",
-        "yaml",
-        "toml",
-        "xml",
+      "html",
+      "css",
+      "scss",
 
-        -- Markup
-        "markdown",
-        "markdown_inline",
-        "rst",
-        "latex",
+      "json",
+      "yaml",
+      "toml",
+      "xml",
 
-        -- Python
-        "python",
+      "markdown",
+      "markdown_inline",
+      "rst",
+      "latex",
 
-        -- Database & Query
-        "sql",
+      "python",
 
-        -- Infrastructure
-        "dockerfile",
-        "nginx",
+      "sql",
 
-        -- Config files
-        "bash",
-        "gitignore",
-        "gitattributes",
-      },
-      sync_install = false,
-      auto_install = true,
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
+      "dockerfile",
+      "nginx",
+
+      "bash",
+      "gitignore",
+      "gitattributes",
+
+      -- Used by rest.nvim; install here so rest.nvim's dep no longer needs to
+      -- mutate `opts.ensure_installed` (which doesn't exist on the main branch).
+      "http",
+    }
+
+    local ok, ts = pcall(require, "nvim-treesitter")
+    if ok and ts.install then
+      ts.install(parsers)
+    end
+
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("nvconfig-treesitter-start", { clear = true }),
+      callback = function(args)
+        local buf = args.buf
+        if not vim.api.nvim_buf_is_valid(buf) then
+          return
+        end
+        local ft = vim.bo[buf].filetype
+        if ft == "" then
+          return
+        end
+        local lang = vim.treesitter.language.get_lang(ft) or ft
+        local started = pcall(vim.treesitter.start, buf, lang)
+        if started then
+          vim.bo[buf].syntax = "ON"
+        end
+      end,
     })
   end,
 }
