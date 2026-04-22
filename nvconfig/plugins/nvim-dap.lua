@@ -20,7 +20,7 @@ return {
     -- Use project venv when VIRTUAL_ENV is set, else kcworks-nlp-tools .venv
     local venv = vim.fn.getenv("VIRTUAL_ENV")
     local py = (venv ~= "" and venv ~= vim.NIL) and (venv .. "/bin/python")
-        or "/Users/ianscott/Development/kcworks-nlp-tools/.venv/bin/python"
+      or "/Users/ianscott/Development/kcworks-nlp-tools/.venv/bin/python"
     dap_python.setup(py)
 
     vim.fn.sign_define("DapBreakpoint", {
@@ -58,6 +58,34 @@ return {
     vim.keymap.set("n", "<leader>cv", function()
       require("dapui").eval(nil, { enter = true })
     end, opts)
+
+    vim.keymap.set("n", "<leader>dm", dap_python.test_method, opts)
+
+    -- CLI debugging configuration
+    local NLP_TOOLS_ROOT = "/Users/ianscott/Development/kcworks-nlp-tools"
+    dap.configurations.python = {
+      {
+        name = "kcworks-nlp: <prompt for args>",
+        type = "debugpy",
+        request = "launch",
+        module = "kcworks_nlp_tools.cli",
+        args = function()
+          local raw = vim.fn.input("CLI args: ", "count-vectors --backend chroma")
+          return vim.split(raw, " ", { trimempty = true })
+        end,
+        cwd = NLP_TOOLS_ROOT,
+        console = "integratedTerminal",
+        justMyCode = false, -- so you can step into click/langchain when needed
+        python = py,
+      },
+      {
+        name = "Python CLI (Attach)",
+        type = "debugpy",
+        request = "attach",
+        connect = { host = "localhost", port = 5678 },
+        python = py,
+      },
+    }
 
     vim.keymap.set("n", "<leader>dc", dap.continue, opts)
     vim.keymap.set("n", "<leader>di", dap.step_into, opts)
