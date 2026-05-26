@@ -24,13 +24,13 @@ return {
         htmldjango = { "djlint" }, -- Removed prettier to avoid conflicts with Jinja
         jinja = { "djlint" },
         jinja2 = { "djlint" },
-        css = { "prettier" },
-        less = { "prettier" },
-        scss = { "prettier" },
-        sass = { "prettier" },
+        css = { "biome" },
+        scss = { "biome" },
+        less = { "prettier" }, -- biome's LESS support is partial
+        sass = { "prettier" }, -- biome doesn't support indented sass
 
         -- Data formats
-        json = { "prettier" },
+        json = { "biome" },
         yaml = { "yamlfmt" },
         yml = { "yamlfmt" },
         toml = { "pyproject-fmt", "taplo" }, -- Try pyproject-fmt first, fallback to taplo
@@ -47,8 +47,9 @@ return {
         sql = { "sql-formatter" },
 
         -- Infrastructure
-        dockerfile = { "hadolint" },
-        nginx = { "nginxfmt", "prettier" },
+        -- dockerfile: hadolint is a linter, not a formatter; linting is handled
+        -- via nvim-lint. No conform formatter is wired up for Dockerfiles.
+        nginx = { "nginxfmt" }, -- prettier has no nginx parser, so it was a no-op fallback
 
         -- Config files
         lua = { "stylua" },
@@ -107,6 +108,14 @@ return {
             "--stdin-file-path",
             "$FILENAME",
             "-",
+          },
+        },
+
+        -- Markdown
+        prettier = {
+          prepend_args = {
+            "--prose-wrap=always",
+            "--print-width=80",
           },
         },
 

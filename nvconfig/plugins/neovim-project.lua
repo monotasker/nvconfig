@@ -8,6 +8,8 @@ return {
       "~/projects/*",
       "~/.config/nvim/*",
       "~/Development/*",
+      "~/Development/learning/*",
+      "~/Development/learning/*/*",
       "~/Development/knowledge-commons-works/site/kcworks/dependencies/*",
       "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/*",
     },

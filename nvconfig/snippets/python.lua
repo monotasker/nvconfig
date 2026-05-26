@@ -10,8 +10,8 @@ return {
       "# Part of invenio-modular-deposit-form",
       "# Copyright (C) 2023-2026, MESH Research",
       "#",
-      "# Invenio-Modular-Deposit-Form is free software; you can redistribute it and/or modify it",
-      "# under the terms of the MIT License; see LICENSE file for more details.",
+      "# Invenio-Modular-Deposit-Form is free software; you can redistribute it and/or ",
+      "# modify it under the terms of the MIT License; see LICENSE file for more details.",
     }),
     i(0),
   }),
@@ -22,8 +22,9 @@ return {
       # Part of <package>
       # Copyright (C) 2023-2026, MESH Research
       #
-      # <package> is free software; you can redistribute and/or modify it
-      # under the terms of the MIT License; see LICENSE file for more details./n<final>
+      # <package> is free software; you can redistribute and/or
+      # modify it under the terms of the MIT License; see LICENSE file for more details.
+      <final>
       ]],
       {
         package = i(1, "package"),
