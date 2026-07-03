@@ -359,7 +359,7 @@ return {
         Snacks.picker.grep({
 	  cmd = { "rg", "--smart-case", "--no-ignore", "--hidden"},
 	  prompt = "Grep",
-	}),
+	})
       end,
       desc = "Grep",
     },
