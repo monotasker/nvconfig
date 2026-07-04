@@ -7,6 +7,7 @@
 
 return {
     "rest-nvim/rest.nvim",
+    build = false,
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
     },
