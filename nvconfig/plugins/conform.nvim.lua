@@ -21,7 +21,7 @@ return {
 
         -- Web technologies
         -- html = { "prettier" }, -- Disabled: prettier doesn't handle Jinja syntax well
-        htmldjango = { "djlint" }, -- Removed prettier to avoid conflicts with Jinja
+        htmldjango = {}, -- { "djlint" }, -- Removed prettier to avoid conflicts with Jinja
         jinja = { "djlint" },
         jinja2 = { "djlint" },
         css = { "biome" },
@@ -73,6 +73,22 @@ return {
             return nil -- skip formatting in this buffer
           end
         end
+
+        -- Get filetype
+        local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+
+        -- Special handling for css.htmldjango: ignore lines with SVG data URIs
+        if ft == "css.htmldjango" then
+          return {
+            timeout_ms = 1000,
+            lsp_fallback = true,
+            ignore_patterns = {
+              [[^.*url\([^)]*data:image/svg\+xml[^)]*\).*]],
+              [[^.*url\([^)]*data:image/svgxml[^)]*\).*]],
+            },
+          }
+        end
+
         return { timeout_ms = 1000, lsp_fallback = true }
       end,
 

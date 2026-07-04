@@ -10,7 +10,7 @@ return {
   config = function()
     local ls = require("luasnip")
     local lua_loader = require("luasnip.loaders.from_lua")
-    local snippets_path = vim.fn.stdpath("config") .. "/lua/nvconfig/snippets"
+    local snippets_path = vim.fn.stdpath("config") .. "/lua/nvconfig/snippets/filetypes"
 
     ls.config.set_config({
       history = true,
@@ -24,6 +24,8 @@ return {
     ls.filetype_extend("javascriptreact", { "javascript" })
     ls.filetype_extend("typescript", { "javascript" })
     ls.filetype_extend("typescriptreact", { "javascript" })
+
+    ls.filetype_extend("htmldjango", { "html" })
 
     -- Handy while iterating on custom snippets.
     pcall(vim.api.nvim_del_user_command, "LuaSnipReload")
