@@ -13,7 +13,7 @@ return {
       "~/Development/*/*/*",
       "~/Development/knowledge-commons-works/site/kcworks/dependencies/*",
       "~/Development/kcworks-next/site/kcworks/dependencies/*",
-      "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/*",
+      "~/Documents/*",
     },
     picker = {
       type = "snacks", -- one of "telescope", "fzf-lua", or "snacks"
