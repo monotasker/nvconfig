@@ -3,6 +3,8 @@
 
 return {
     "erl-koenig/theme-hub.nvim",
+    lazy = false,
+    priority = 1100,
     dependencies = {
         "nvim-lua/plenary.nvim"
         -- Optional: for themes that use lush (will be notified if a theme requires it)
