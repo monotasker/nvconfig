@@ -34,7 +34,7 @@ return {
     },
     legacy_commands = false,
     picker = {
-      name = "snacks",
+      name = "snacks.picker",
       note_mappings = {
         new = "<C-x>",
         insert_link = "<C-l>",
