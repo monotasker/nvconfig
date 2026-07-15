@@ -14,6 +14,7 @@ return {
       "~/Development/knowledge-commons-works/site/kcworks/dependencies/*",
       "~/Development/kcworks-next/site/kcworks/dependencies/*",
       "~/Documents/*",
+      "~/.local/bin/*",
     },
     picker = {
       type = "snacks", -- one of "telescope", "fzf-lua", or "snacks"
