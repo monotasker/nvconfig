@@ -9,7 +9,11 @@ return {
     local conform = require("conform")
 
     conform.setup({
+      -- Go
       formatters_by_ft = {
+        go = { "goimports", "gofmt" },
+        -- or: go = { "goimports", "gofumpt" },
+
         -- Python
         python = { "ruff_format" },
 
