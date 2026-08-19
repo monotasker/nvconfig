@@ -30,6 +30,8 @@ return {
       "vimdoc",
       "query",
 
+      "go",
+
       "javascript",
       "typescript",
       "tsx",
