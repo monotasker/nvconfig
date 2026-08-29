@@ -1,0 +1,54 @@
+# Knowledge Commons / KCWorks requests — hosts + secrets from http-client.env.json
+#
+# Secrets (work store): KC_API_KEY, KC_SEARCH_API_KEY, KC_PROFILES_API_KEY, KCWORKS_API_KEY
+# Hosts: {{kc_host}}, {{kc_profiles_host}}, {{kcworks_host}}
+#
+#   ssec -s work unlock
+#   <leader>Re  → dev | staging | prod
+#   <leader>Rs  → send (one YubiKey touch per inject)
+
+### KC — site root (API key)
+< {%
+  -- lua
+  require("nvconfig.kulala.simplesec").inject("KC_API_KEY")
+%}
+
+GET {{kc_host}}/
+Authorization: Bearer {{KC_API_KEY}}
+Accept: application/json
+
+###
+
+### KC — search
+< {%
+  -- lua
+  require("nvconfig.kulala.simplesec").inject("KC_SEARCH_API_KEY")
+%}
+
+GET {{kc_host}}/
+Authorization: Bearer {{KC_SEARCH_API_KEY}}
+Accept: application/json
+
+###
+
+### KC Profiles
+< {%
+  -- lua
+  require("nvconfig.kulala.simplesec").inject("KC_PROFILES_API_KEY")
+%}
+
+GET {{kc_profiles_host}}/
+Authorization: Bearer {{KC_PROFILES_API_KEY}}
+Accept: application/json
+
+###
+
+### KCWorks — records
+< {%
+  -- lua
+  require("nvconfig.kulala.simplesec").inject("KCWORKS_API_KEY")
+%}
+
+GET {{kcworks_host}}/api/records
+Authorization: Bearer {{KCWORKS_API_KEY}}
+Accept: application/json

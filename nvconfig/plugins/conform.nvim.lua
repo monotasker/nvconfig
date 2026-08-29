@@ -25,7 +25,7 @@ return {
 
         -- Web technologies
         -- html = { "prettier" }, -- Disabled: prettier doesn't handle Jinja syntax well
-        htmldjango = {}, -- { "djlint" }, -- Removed prettier to avoid conflicts with Jinja
+        htmldjango = { "djlint" }, -- Removed prettier to avoid conflicts with Jinja
         jinja = { "djlint" },
         jinja2 = { "djlint" },
         css = { "biome" },
