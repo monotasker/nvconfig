@@ -1,5 +1,11 @@
 -- core settings
 
+-- Unused remote-plugin hosts (Lua/LSP stack doesn't need them).
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- vim.cmd("colorscheme dayfox")
 vim.opt.guifont = "Monaspace Neon NF Regular:h15"
 -- vim.opt.guifont = "JetBrainsMono Nerd Font Mono:h15"
@@ -23,6 +29,22 @@ vim.opt.scrolloff = 8
 vim.opt.showcmd = true
 
 vim.opt.winbar = "%f"
+
+-- Avante sidebars: drop the native winbar (lualine only controls its own winbar).
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {
+    "Avante",
+    "AvanteInput",
+    "AvanteSelectedFiles",
+    "AvanteSelectedCode",
+    "AvanteTodos",
+    "AvanteConfirm",
+    "AvantePromptInput",
+  },
+  callback = function()
+    vim.opt_local.winbar = ""
+  end,
+})
 
 vim.opt.swapfile = false
 vim.opt.backup = false

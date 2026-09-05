@@ -357,9 +357,9 @@ return {
       "<leader>fs",
       function()
         Snacks.picker.grep({
-	  cmd = { "rg", "--smart-case", "--no-ignore", "--hidden"},
-	  prompt = "Grep",
-	})
+          cmd = { "rg", "--smart-case", "--no-ignore", "--hidden" },
+          prompt = "Grep",
+        })
       end,
       desc = "Grep",
     },

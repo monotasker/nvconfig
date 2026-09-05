@@ -38,7 +38,51 @@ return {
         winhighlight = true, -- Auto highlighting for focussed/unfocussed windows
       },
     })
-    -- Exclude Neotree and snacks explorer from focus.nvim resizing
+
+    -- focus.nvim defaults FocusedWindow → VertSplit (dim border grey), which
+    -- makes all Normal text in the focused window unreadable. Override with
+    -- theme-derived highlights; re-apply on ColorScheme after highlight clear.
+    ---@param color integer|nil 24-bit RGB from nvim_get_hl
+    ---@param factor number Scale channels toward black (e.g. 0.85)
+    ---@return integer|nil
+    local function dim_color(color, factor)
+      if not color then
+        return nil
+      end
+      local r = math.floor(color / 65536) % 256
+      local g = math.floor(color / 256) % 256
+      local b = color % 256
+      r = math.floor(r * factor)
+      g = math.floor(g * factor)
+      b = math.floor(b * factor)
+      return (r * 65536) + (g * 256) + b
+    end
+
+    local function set_focus_win_highlights()
+      vim.api.nvim_set_hl(0, "FocusedWindow", { link = "Normal" })
+
+      local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+      local comment = vim.api.nvim_get_hl(0, { name = "Comment", link = false })
+      local dim_bg = dim_color(normal.bg, 0.85)
+
+      if dim_bg then
+        vim.api.nvim_set_hl(0, "UnfocusedWindow", {
+          fg = comment.fg or normal.fg,
+          bg = dim_bg,
+        })
+      else
+        -- Transparent Normal bg: fall back to NormalNC / Comment.
+        vim.api.nvim_set_hl(0, "UnfocusedWindow", { link = "NormalNC" })
+      end
+    end
+    set_focus_win_highlights()
+    vim.api.nvim_create_autocmd("ColorScheme", {
+      group = vim.api.nvim_create_augroup("FocusWinHighlights", { clear = true }),
+      callback = set_focus_win_highlights,
+      desc = "Keep focus.nvim window highlights readable after colorscheme",
+    })
+
+    -- Exclude sidebars/panels from focus.nvim resizing
     local ignore_filetypes = {
       "neo-tree",
       "neo-tree-popup",
@@ -47,33 +91,38 @@ return {
       "neo-tree-git_status",
       "neo-tree-diagnostics",
       "neo-tree-search",
+      -- Avante chat sidebar (result / selected files / input)
+      "Avante",
+      "AvanteInput",
+      "AvanteSelectedFiles",
+      "AvanteSelectedCode",
+      "AvanteTodos",
+      "AvanteConfirm",
+      "AvantePromptInput",
     }
     local ignore_buftypes = { "nofile", "prompt", "popup" }
 
     local augroup = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
 
-    -- Disable for specific buffer types
+    local function should_disable_focus()
+      return vim.tbl_contains(ignore_buftypes, vim.bo.buftype)
+        or vim.tbl_contains(ignore_filetypes, vim.bo.filetype)
+    end
+
+    -- Disable for specific buffer/file types (window-scoped on enter)
     vim.api.nvim_create_autocmd("WinEnter", {
       group = augroup,
       callback = function()
-        if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
-          vim.w.focus_disable = true
-        else
-          vim.w.focus_disable = false
-        end
+        vim.w.focus_disable = should_disable_focus()
       end,
-      desc = "Disable focus autoresize for BufType",
+      desc = "Disable focus autoresize for BufType/FileType",
     })
 
-    -- Disable for specific file types
+    -- Disable for specific file types (buffer-scoped; survives focus in other wins)
     vim.api.nvim_create_autocmd("FileType", {
       group = augroup,
       callback = function()
-        if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
-          vim.b.focus_disable = true
-        else
-          vim.b.focus_disable = false
-        end
+        vim.b.focus_disable = vim.tbl_contains(ignore_filetypes, vim.bo.filetype)
       end,
       desc = "Disable focus autoresize for FileType",
     })

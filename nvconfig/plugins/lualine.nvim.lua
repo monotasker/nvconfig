@@ -8,6 +8,29 @@ return {
   },
   -- optional = true,
   opts = {
+    options = {
+      -- Hide statusline chrome when an Avante sidebar window is focused.
+      disabled_filetypes = {
+        statusline = {
+          "Avante",
+          "AvanteInput",
+          "AvanteSelectedFiles",
+          "AvanteSelectedCode",
+          "AvanteTodos",
+          "AvanteConfirm",
+          "AvantePromptInput",
+        },
+        winbar = {
+          "Avante",
+          "AvanteInput",
+          "AvanteSelectedFiles",
+          "AvanteSelectedCode",
+          "AvanteTodos",
+          "AvanteConfirm",
+          "AvantePromptInput",
+        },
+      },
+    },
     extensions = {
       "aerial",
       "neo-tree",

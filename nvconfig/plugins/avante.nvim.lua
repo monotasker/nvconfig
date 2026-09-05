@@ -2,6 +2,10 @@
 
 local lms = require("nvconfig.ai_lms")
 
+-- Keep nvm's pi / pi-acp visible when Neovim wasn't launched from a login shell.
+local nvm_bin = (os.getenv("NVM_DIR") or (os.getenv("HOME") .. "/.nvm")) .. "/versions/node/v24.9.0/bin"
+local path_with_nvm = nvm_bin .. ":" .. (os.getenv("PATH") or "")
+
 return {
   {
     "yetone/avante.nvim",
@@ -15,24 +19,34 @@ return {
       "MeanderingProgrammer/render-markdown.nvim",
     },
     opts = {
-      provider = "cursor",
+      provider = "pi",
       mode = "agentic",
       acp_providers = {
+        pi = {
+          -- pi-acp bridges ACP ↔ `pi --mode rpc`; LMS defaults in ~/.pi/agent/
+          command = nvm_bin .. "/pi-acp",
+          args = {},
+          env = {
+            HOME = os.getenv("HOME"),
+            PATH = path_with_nvm,
+          },
+        },
+        opencode = {
+          command = "opencode",
+          -- Default model/provider live in ~/.config/opencode/opencode.json
+          args = { "acp" },
+          env = {
+            HOME = os.getenv("HOME"),
+            PATH = path_with_nvm,
+          },
+        },
         cursor = {
           command = vim.fn.expand("~/.local/bin/agent"),
           args = { "acp" },
           auth_method = "cursor_login",
           env = {
             HOME = os.getenv("HOME"),
-            PATH = os.getenv("PATH"),
-          },
-        },
-        opencode = {
-          command = "opencode",
-          args = { "acp" },
-          env = {
-            HOME = os.getenv("HOME"),
-            PATH = os.getenv("PATH"),
+            PATH = path_with_nvm,
           },
         },
       },
@@ -54,6 +68,13 @@ return {
     keys = {
       { "<leader>aa", "<cmd>AvanteAsk<cr>", desc = "Avante ask" },
       { "<leader>at", "<cmd>AvanteToggle<cr>", desc = "Avante toggle sidebar" },
+      {
+        "<leader>ap",
+        function()
+          require("avante.api").switch_provider("pi")
+        end,
+        desc = "Avante → Pi ACP",
+      },
       {
         "<leader>ac",
         function()

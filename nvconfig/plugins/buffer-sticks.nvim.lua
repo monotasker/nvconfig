@@ -34,7 +34,24 @@ return {
   config = function()
     local sticks = require("buffer-sticks")
     sticks.setup({
-      filter = { buftypes = { "terminal" } },
+      -- Idle indicator overlaps Avante/markdown at the screen edge; only
+      -- show during jump/list (<leader>j / <leader>p / <leader>q).
+      -- show_indicators=false is required: otherwise leave() re-renders the
+      -- idle sticks after jump/list (plugin keeps them visible by design).
+      show_by_default = false,
+      show_indicators = false,
+      filter = {
+        buftypes = { "terminal" },
+        filetypes = {
+          "Avante",
+          "AvanteInput",
+          "AvanteSelectedFiles",
+          "AvanteSelectedCode",
+          "AvanteTodos",
+          "AvanteConfirm",
+          "AvantePromptInput",
+        },
+      },
       highlights = {
         active = { link = "Statement" },
         alternate = { link = "StorageClass" },
@@ -47,7 +64,17 @@ return {
         filter_title = { link = "Comment" },
       },
     })
-    sticks.show()
+
+    -- Plugin BufEnter sets visible=false when show_by_default is off but does
+    -- not close an already-open float; force-hide any leftover.
+    vim.api.nvim_create_autocmd("BufEnter", {
+      group = vim.api.nvim_create_augroup("nvconfig-buffer-sticks-hide", { clear = true }),
+      callback = function()
+        if BufferSticks and not BufferSticks.is_visible() then
+          BufferSticks.hide()
+        end
+      end,
+    })
   end,
 }
 
