@@ -34,6 +34,9 @@ return {
           "dockerls",  -- TESTING: Commented out for now (Docker language server)
           "nginx_language_server",  -- Nginx language server
 
+          -- Go
+          "gopls",
+
           -- Testing
           -- "quick_lint_js",  -- INVALID: This is a linter, not an LSP server
 
