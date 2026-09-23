@@ -30,6 +30,9 @@ return {
           -- Database & Query
           "sqls",  -- TESTING: Commented out for now (SQL language server)
 
+          -- Go
+          "gopls",
+
           -- Infrastructure
           "dockerls",  -- TESTING: Commented out for now (Docker language server)
           "nginx_language_server",  -- Nginx language server

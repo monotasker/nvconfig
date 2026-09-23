@@ -371,6 +371,16 @@ return {
         },
       },
 
+      -- Go
+      gopls = {
+        settings = {
+          gopls = {
+            analyses = { unusedparams = true },
+            staticcheck = true,
+          },
+        },
+      },
+
       -- Testing
       quick_lint_js = {
         settings = {
@@ -404,7 +414,7 @@ return {
     -- Setup LSP servers using the modern vim.lsp.config() API
     -- This is the new way since setup_handlers was deprecated in mason-lspconfig 2.0+
 
-    -- Setup Infrastructure
+    -- Setup CSS server
     vim.lsp.config("cssls", {
       on_attach = on_attach,
       capabilities = capabilities,
@@ -457,6 +467,13 @@ return {
       on_attach = on_attach,
       capabilities = capabilities,
       settings = servers.tsserver.settings,
+    })
+
+    -- Setup Go server
+    vim.lsp.config("gopls", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      settings = servers.gopls.settings,
     })
 
     -- Diagnostic configuration
