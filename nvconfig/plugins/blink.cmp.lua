@@ -63,6 +63,7 @@ return {
         "path",
         "snippets",
         "buffer",
+        "minuet", -- Add minuet as a source
         -- "avante_commands",
         -- "avante_mentions",
         -- "avante_shortcuts",
@@ -77,6 +78,12 @@ return {
         lsp = {
           name = "LSP",
           module = "blink.cmp.sources.lsp",
+        },
+        minuet = {
+          name = "minuet",
+          module = "blink.compat.source",
+          score_offset = 10, -- show after LSP but before buffer
+          opts = {},
         },
         -- avante_commands = {
         --   name = "avante_commands",

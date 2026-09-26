@@ -17,6 +17,10 @@ return {
       "MunifTanjim/nui.nvim",
       "nvim-tree/nvim-web-devicons",
       "MeanderingProgrammer/render-markdown.nvim",
+      {
+        "ColinKennedy/mega.cmdparse",
+        dependencies = { "ColinKennedy/mega.logging" },
+      },
     },
     opts = {
       provider = "pi",

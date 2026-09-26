@@ -44,16 +44,7 @@ return {
         },
       },
       virtualtext = {
-        auto_trigger_ft = { "*" },
-        -- Keep ghost text visible even when blink's completion menu is open.
-        show_on_completion_menu = true,
-        keymap = {
-          accept = "<C-y>",
-          accept_line = "<C-S-y>",
-          next = "<M-]>",
-          prev = "<M-[>",
-          dismiss = "<C-e>",
-        },
+        auto_trigger_ft = {}, -- Disable ghost text, blink.cmp handles completions
       },
     },
   },
