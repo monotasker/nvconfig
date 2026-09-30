@@ -77,6 +77,8 @@ return {
       cmd = "biome",
       args = {
         "check",
+        "--config-path",
+        vim.fn.stdpath("config") .. "/lua/configs/biome.json",
         "--stdin-file-path",
         "$FILENAME",
         "-",

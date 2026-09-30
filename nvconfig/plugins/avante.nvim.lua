@@ -23,6 +23,8 @@ return {
       },
     },
     opts = {
+      -- String form: avoids avante's numeric log-level assert failing on WARN (3).
+      log_level = "WARN",
       provider = "pi",
       mode = "agentic",
       acp_providers = {

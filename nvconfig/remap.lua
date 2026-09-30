@@ -282,16 +282,23 @@ vim.keymap.set("n", "<leader>p", function()
   print(vim.fn.expand("%:p"))
 end, { desc = "Show current file path" })
 
--- Sort imports with Ruff
-vim.keymap.set("n", "<leader>si", function()
+-- Organize / sort imports (Ruff for Python, ts_ls for JS/TS)
+vim.keymap.set("n", "<leader>oi", function()
   local filename = vim.fn.expand("%")
-  if vim.bo.filetype == "python" then
-    vim.cmd("!ruff check --fix --select I " .. filename)
+  local ft = vim.bo.filetype
+  if ft == "python" then
+    vim.cmd("!ruff check --fix --select I " .. vim.fn.shellescape(filename))
     vim.cmd("edit")
+  elseif ft == "javascript" or ft == "javascriptreact"
+      or ft == "typescript" or ft == "typescriptreact" then
+    vim.lsp.buf.execute_command({
+      command = "_typescript.organizeImports",
+      arguments = { vim.api.nvim_buf_get_name(0) },
+    })
   else
-    print("Not a Python file")
+    print("No import sorter for filetype: " .. ft)
   end
-end, { desc = "Sort imports with Ruff" })
+end, { desc = "Organize / sort imports" })
 
 -- UFO FOLDING KEYBINDINGS
 

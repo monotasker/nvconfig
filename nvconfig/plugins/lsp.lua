@@ -136,18 +136,27 @@ return {
       },
 
       -- JavaScript/TypeScript/React
-      tsserver = {
+      -- Server name is ts_ls (mason); tsserver was renamed in nvim-lspconfig.
+      ts_ls = {
         settings = {
           typescript = {
             preferences = {
               disableSuggestions = false,
               includePackageJsonAutoImports = "auto",
             },
+            -- Match VS Code defaults for inferred projects (no jsconfig/tsconfig):
+            -- allow JSX in .js files so code actions work on React-in-.js.
+            implicitProjectConfig = {
+              jsx = "react",
+            },
           },
           javascript = {
             preferences = {
               disableSuggestions = false,
               includePackageJsonAutoImports = "auto",
+            },
+            implicitProjectConfig = {
+              jsx = "react",
             },
           },
           completions = {
@@ -463,10 +472,10 @@ return {
     })
 
     -- Setup TypeScript/JavaScript server
-    vim.lsp.config("tsserver", {
+    vim.lsp.config("ts_ls", {
       on_attach = on_attach,
       capabilities = capabilities,
-      settings = servers.tsserver.settings,
+      settings = servers.ts_ls.settings,
     })
 
     -- Setup Go server
