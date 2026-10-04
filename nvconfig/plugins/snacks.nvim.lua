@@ -624,6 +624,20 @@ return {
       desc = "Undo History",
     },
     {
+      "<leader>sn",
+      function()
+        Snacks.scratch()
+      end,
+      desc = "Toggle Scratch Buffer",
+    },
+    {
+      "<leader>se",
+      function()
+        Snacks.scratch.select()
+      end,
+      desc = "Select Scratch Buffer",
+    },
+    {
       "<leader>uC",
       function()
         Snacks.picker.colorschemes()
